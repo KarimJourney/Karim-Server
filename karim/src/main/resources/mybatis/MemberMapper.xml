@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.karim.karim.repository.MemberRepository">
+
+    <select id="findById" parameterType="string" resultType="Member">
+        SELECT *
+        FROM member
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAll" parameterType="string" resultType="Member">
+        SELECT *
+        FROM member
+    </select>
+
+    <insert id="join" parameterType="Member">
+        INSERT INTO member(id, password, nickname)
+        VALUES (#{id}, #{password}, #{nickname})
+    </insert>
+
+    <update id="modifyWithPw" parameterType="Member">
+        UPDATE member
+        SET password = #{password}, nickname = #{nickname}
+        WHERE id = #{id}
+    </update>
+
+    <update id="modifyWithoutPw" parameterType="Member">
+        UPDATE member
+        SET nickname = #{nickname}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="withdraw" parameterType="map">
+        DELETE
+        FROM member
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
