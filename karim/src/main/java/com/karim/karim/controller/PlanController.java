@@ -27,7 +27,7 @@ public class PlanController {
     }
 
     @Operation(summary = "전체 계획 조회", description = "사용자가 등록한 모든 여행 계획을 조회합니다.")
-    @GetMapping()
+    @GetMapping("/{userId}")
     public ResponseEntity<List<PlanDto>> findByUserId(@PathVariable Long userId) {
         List<PlanDto> plans = planService.findByUserId(userId);
         return ResponseEntity.ok(plans);
@@ -52,7 +52,7 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 삭제", description = "특정 ID의 여행 계획을 삭제합니다.")
-    @DeleteMapping()
+    @DeleteMapping("/{userId}/{id}")
     public ResponseEntity<String> delete(@PathVariable int id, @PathVariable Long userId) {
         int result = planService.deletePlan(id, userId);
         if (result > 0) {
@@ -63,7 +63,7 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 상세 조회", description = "특정 여행 계획과 해당 계획의 장소 목록을 조회합니다.")
-    @GetMapping("/{id}")
+    @GetMapping("/{userId}/{id}")
     public ResponseEntity<Map<String, Object>> getPlanDetails(@PathVariable int id, @PathVariable Long userId) {
         PlanDto plan = planService.findByIdAndUserId(id, userId);
         List<PlaceDto> places = placeService.findByPlanId(id);
@@ -76,7 +76,7 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 내 장소 추가", description = "특정 계획에 새로운 장소를 추가합니다.")
-    @PostMapping("/{id}")
+    @PostMapping("/place")
     public ResponseEntity<String> addPlaceToPlan(@PathVariable int id, @RequestBody PlaceDto placeDto) {
         placeDto.setPlanId(id);
         int result = placeService.save(placeDto);
@@ -88,7 +88,7 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 내 장소 수정", description = "특정 계획 내 장소를 수정합니다.")
-    @PatchMapping("/{id}")
+    @PatchMapping("/place")
     public ResponseEntity<String> modifyPlaceInPlan(@PathVariable int id, @RequestBody PlaceListDto placeListDto) {
         int result = placeService.modify(placeListDto.getData());
         if (result > 0) {
@@ -99,7 +99,7 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 내 장소 삭제", description = "특정 계획에서 장소를 삭제합니다.")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/{placeId}")
     public ResponseEntity<String> deletePlaceFromPlan(@PathVariable int id, @PathVariable int placeId) {
         PlaceDto placeDto = new PlaceDto();
         placeDto.setId(placeId);
