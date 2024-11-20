@@ -33,8 +33,8 @@ public class MemberController {
     }
 
     @Operation(summary = "카카오 로그인 / 회원가입", description = "카카오 인증 후 로그인 또는 회원가입을 처리합니다.")
-    @GetMapping("/callback")
-    public ResponseEntity<?> callback(@RequestParam("code") String code) {
+    @GetMapping("/kakaologin/{code}")
+    public ResponseEntity<?> kakaoLogin(@PathVariable("code") String code) {
 
         String kakaoAccessToken = kakaoService.getAccessTokenFromKakao(code);
 

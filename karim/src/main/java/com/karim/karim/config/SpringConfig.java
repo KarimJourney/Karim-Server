@@ -1,4 +1,4 @@
-package com.karim.karim;
+package com.karim.karim.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
