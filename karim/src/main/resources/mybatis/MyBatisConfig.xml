@@ -8,8 +8,8 @@
     </settings>
 
     <typeAliases>
-        <typeAlias alias="Member"
-                   type="com.karim.karim.domain.Member"/>
+        <typeAlias alias="MemberDto"
+                   type="com.karim.karim.dto.MemberDto"/>
     </typeAliases>
     <mappers>
         <mapper resource="mybatis/MemberMapper.xml"/>

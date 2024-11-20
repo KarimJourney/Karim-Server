@@ -5,35 +5,29 @@
 
 <mapper namespace="com.karim.karim.repository.MemberRepository">
 
-    <select id="findById" parameterType="string" resultType="Member">
-        SELECT *
+    <select id="findById" parameterType="java.lang.Long" resultType="com.karim.karim.dto.MemberDto">
+        SELECT id, nickname
         FROM member
         WHERE id = #{id}
     </select>
 
-    <select id="findAll" parameterType="string" resultType="Member">
-        SELECT *
+    <select id="findAll" resultType="com.karim.karim.dto.MemberDto">
+        SELECT id, nickname
         FROM member
     </select>
 
-    <insert id="join" parameterType="Member">
-        INSERT INTO member(id, password, nickname)
-        VALUES (#{id}, #{password}, #{nickname})
+    <insert id="join" parameterType="com.karim.karim.dto.MemberDto">
+        INSERT INTO member (id, nickname)
+        VALUES (#{id}, #{nickname})
     </insert>
 
-    <update id="modifyWithPw" parameterType="Member">
-        UPDATE member
-        SET password = #{password}, nickname = #{nickname}
-        WHERE id = #{id}
-    </update>
-
-    <update id="modifyWithoutPw" parameterType="Member">
+    <update id="modify" parameterType="com.karim.karim.dto.MemberDto">
         UPDATE member
         SET nickname = #{nickname}
         WHERE id = #{id}
     </update>
 
-    <delete id="withdraw" parameterType="map">
+    <delete id="withdraw" parameterType="java.lang.Long">
         DELETE
         FROM member
         WHERE id = #{id}
