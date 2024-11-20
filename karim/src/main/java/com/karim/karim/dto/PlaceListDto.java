@@ -2,13 +2,13 @@ package com.karim.karim.dto;
 
 import lombok.*;
 
+import java.util.*;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class MemberDto {
-    private Long id;
-    private String nickname;
+public class PlaceListDto {
+    private List<PlaceDto> data;
 }
-

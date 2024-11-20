@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.karim.karim.repository.PlanRepository">
+
+    <resultMap type="com.karim.karim.dto.PlaceDto" id="PlanDto">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="name" property="name"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+    </resultMap>
+
+    <select id="findByIdAndUserId" parameterType="map" resultMap="PlanDto">
+        SELECT *
+        FROM plan
+        WHERE user_id = #{userId} AND id = #{id}
+    </select>
+
+    <select id="findByUserId" parameterType="java.lang.Long" resultMap="PlanDto">
+        SELECT *
+        FROM plan
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="save" parameterType="PlanDto">
+        INSERT INTO plan(user_id, name, start_date, end_date)
+        VALUES (#{userId}, #{name}, #{startDate}, #{endDate})
+    </insert>
+
+    <update id="modify" parameterType="PlanDto">
+        UPDATE plan
+        SET name = #{name}, start_date = #{startDate}, end_date = #{endDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="map">
+        DELETE
+        FROM plan
+        WHERE id = #{id} AND user_id = #{userId}
+    </delete>
+</mapper>

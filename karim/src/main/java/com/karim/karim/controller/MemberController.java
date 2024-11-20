@@ -15,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/member")
@@ -34,21 +32,18 @@ public class MemberController {
         this.jwtUtil = jwtUtil;
     }
 
-    @Operation(summary = "카카오 로그인/회원가입", description = "카카오 인증 후 로그인 또는 회원가입을 처리합니다.")
+    @Operation(summary = "카카오 로그인 / 회원가입", description = "카카오 인증 후 로그인 또는 회원가입을 처리합니다.")
     @GetMapping("/callback")
     public ResponseEntity<?> callback(@RequestParam("code") String code) {
-        // 카카오에서 AccessToken 가져오기
+
         String kakaoAccessToken = kakaoService.getAccessTokenFromKakao(code);
 
-        // 카카오 사용자 정보 가져오기
         KakaoUserInfoResponseDto userInfo = kakaoService.getUserInfo(kakaoAccessToken);
         Long kakaoId = userInfo.getId();
         String nickname = userInfo.getKakaoAccount().getProfile().getNickName();
 
-        // 회원 정보 확인
         MemberDto member = memberService.findById(kakaoId);
 
-        // 기존 회원일 경우
         if (member != null) {
             String newAccessToken = jwtUtil.createAccessToken(String.valueOf(kakaoId));
             String refreshToken = jwtUtil.createRefreshToken(String.valueOf(kakaoId));
@@ -61,7 +56,6 @@ public class MemberController {
 
             return ResponseEntity.ok(response);
         } else {
-            // 신규 회원일 경우
             Map<String, Object> response = new HashMap<>();
             response.put("kakaoId", kakaoId);
             response.put("nickname", nickname);
@@ -82,6 +76,7 @@ public class MemberController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<MemberDto> findById(@PathVariable Long id) {
+
         MemberDto memberDto = memberService.findById(id);
         if (memberDto == null) {
             throw new IllegalStateException("회원 조회 실패: 해당 회원을 찾을 수 없습니다.");
@@ -98,6 +93,7 @@ public class MemberController {
     @Operation(summary = "회원 가입", description = "회원 정보를 입력받아 새로운 회원을 등록합니다.")
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody MemberDto memberDto) {
+
         memberService.join(memberDto);
         return ResponseEntity.ok("회원 가입 성공");
     }
@@ -119,11 +115,12 @@ public class MemberController {
         }
 
         int result = memberService.modify(memberDto);
-        if (result <= 0) {
+
+        if (result > 0) {
+            return ResponseEntity.ok("회원 정보 수정 성공");
+        } else {
             throw new IllegalStateException("회원 정보 수정 실패");
         }
-
-        return ResponseEntity.ok("회원 정보 수정 성공");
     }
 
     @Operation(summary = "회원 탈퇴", description = "회원 ID를 통해 회원 탈퇴를 진행합니다.")
@@ -143,11 +140,12 @@ public class MemberController {
         }
 
         int result = memberService.withdraw(id);
-        if (result <= 0) {
+
+        if (result > 0) {
+            return ResponseEntity.ok("회원 탈퇴 성공");
+        } else {
             throw new IllegalStateException("회원 탈퇴 실패: 해당 회원을 찾을 수 없습니다.");
         }
-
-        return ResponseEntity.ok("회원 탈퇴 성공");
     }
 
     @Operation(

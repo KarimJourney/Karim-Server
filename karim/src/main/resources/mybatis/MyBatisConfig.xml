@@ -8,10 +8,13 @@
     </settings>
 
     <typeAliases>
-        <typeAlias alias="MemberDto"
-                   type="com.karim.karim.dto.MemberDto"/>
+        <typeAlias alias="MemberDto" type="com.karim.karim.dto.MemberDto"/>
+        <typeAlias alias="PlaceDto" type="com.karim.karim.dto.PlaceDto"/>
+        <typeAlias alias="PlanDto" type="com.karim.karim.dto.PlanDto"/>
     </typeAliases>
     <mappers>
         <mapper resource="mybatis/MemberMapper.xml"/>
+        <mapper resource="mybatis/PlanMapper.xml"/>
+        <mapper resource="mybatis/PlaceMapper.xml"/>
     </mappers>
 </configuration>
