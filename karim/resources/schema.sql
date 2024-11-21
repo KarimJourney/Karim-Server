@@ -16,6 +16,15 @@ CREATE TABLE `member` (
   PRIMARY KEY (`id`)
 );
 
+-- 관광지 테이블
+create table attraction (
+	id int,
+    name varchar(500),
+    address varchar(100),
+    latitude decimal(20, 17),
+    longitude decimal(20, 17)
+);
+
 -- 여행 계획 테이블
 drop table if exists plan;
 CREATE TABLE plan (
