@@ -71,9 +71,6 @@ public class PlanController {
     public ResponseEntity<Map<String, Object>> getPlanDetails(@PathVariable("id") int id, @PathVariable("userId") Long userId) {
         PlanDto plan = planService.findByIdAndUserId(id, userId);
         List<PlaceDto> places = placeService.findByPlanId(id);
-
-        System.out.println("plan: " + plan);
-        System.out.println("places: " + places);
         Map<String, Object> response = new HashMap<>();
         response.put("plan", plan);
         response.put("places", places);

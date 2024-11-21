@@ -17,4 +17,6 @@ public class PlaceDto {
     private double longitude;
     private String planDate;
     private int order;
+    private long cost;
+    private String content;
 }

@@ -11,6 +11,8 @@
         <result column="name" property="name"/>
         <result column="start_date" property="startDate"/>
         <result column="end_date" property="endDate"/>
+        <result column="cost" property="cost" />
+        <result column="content" property="content" />
     </resultMap>
 
     <select id="findByIdAndUserId" parameterType="map" resultMap="PlanDto">
@@ -32,7 +34,7 @@
 
     <update id="modify" parameterType="PlanDto">
         UPDATE plan
-        SET name = #{name}, start_date = #{startDate}, end_date = #{endDate}
+        SET name = #{name}, start_date = #{startDate}, end_date = #{endDate}, cost = #{cost}, content = #{content}
         WHERE id = #{id}
     </update>
 

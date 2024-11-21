@@ -15,10 +15,12 @@
         <result column="longitude" property="longitude"/>
         <result column="plan_date" property="planDate"/>
         <result column="ord" property="order"/>
+        <result column="cost" property="cost" />
+        <result column="content" property="content" />
     </resultMap>
 
     <select id="findByPlanId" resultMap="PlaceDto">
-        SELECT place.id, plan_id, attraction.id as attr_id, name, address, latitude, longitude, plan_date, ord
+        SELECT place.id, plan_id, attraction.id as attr_id, name, address, latitude, longitude, plan_date, ord, cost, content
         FROM place
         LEFT JOIN attraction ON place.attr_id = attraction.id
         WHERE plan_id = #{planId}
@@ -36,7 +38,7 @@
 
     <update id="modify" parameterType="PlaceDto">
         UPDATE place
-        SET plan_date = #{planDate}, ord = #{order}
+        SET plan_date = #{planDate}, ord = #{order}, cost = #{cost}, content = #{content}
         WHERE id = #{id}
     </update>
 
