@@ -4,7 +4,7 @@ import com.karim.karim.dto.MemberDto;
 import com.karim.karim.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MemberService {
