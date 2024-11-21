@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,10 +43,10 @@ public class MemberController {
 
         MemberDto member = memberService.findById(kakaoId);
 
-        if (member != null) {
-            String newAccessToken = jwtUtil.createAccessToken(String.valueOf(kakaoId));
-            String refreshToken = jwtUtil.createRefreshToken(String.valueOf(kakaoId));
+        String newAccessToken = jwtUtil.createAccessToken(String.valueOf(kakaoId));
+        String refreshToken = jwtUtil.createRefreshToken(String.valueOf(kakaoId));
 
+        if (member != null) {
             Map<String, Object> response = new HashMap<>();
             response.put("accessToken", newAccessToken);
             response.put("refreshToken", refreshToken);
@@ -56,12 +55,15 @@ public class MemberController {
 
             return ResponseEntity.ok(response);
         } else {
+            MemberDto memberDto = new MemberDto(kakaoId, nickname);
+            memberService.join(memberDto);
             Map<String, Object> response = new HashMap<>();
-            response.put("kakaoId", kakaoId);
-            response.put("nickname", nickname);
+            response.put("accessToken", newAccessToken);
+            response.put("refreshToken", refreshToken);
+            response.put("member", memberDto);
             response.put("message", "회원가입");
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            return ResponseEntity.ok(response);
         }
     }
 
@@ -88,14 +90,6 @@ public class MemberController {
     @GetMapping("/all")
     public ResponseEntity<List<MemberDto>> findAll() {
         return ResponseEntity.ok(memberService.findAll());
-    }
-
-    @Operation(summary = "회원 가입", description = "회원 정보를 입력받아 새로운 회원을 등록합니다.")
-    @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody MemberDto memberDto) {
-
-        memberService.join(memberDto);
-        return ResponseEntity.ok("회원 가입 성공");
     }
 
     @Operation(summary = "회원 정보 수정", description = "회원 정보 수정을 진행합니다.")
