@@ -10,5 +10,6 @@ import lombok.*;
 public class MemberDto {
     private Long id;
     private String nickname;
+    private String profileImageUrl;
 }
 

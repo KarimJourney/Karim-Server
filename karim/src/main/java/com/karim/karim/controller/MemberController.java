@@ -40,6 +40,7 @@ public class MemberController {
         KakaoUserInfoResponseDto userInfo = kakaoService.getUserInfo(kakaoAccessToken);
         Long kakaoId = userInfo.getId();
         String nickname = userInfo.getKakaoAccount().getProfile().getNickName();
+        String profileImageUrl = userInfo.getKakaoAccount().getProfile().getProfileImageUrl();
 
         MemberDto member = memberService.findById(kakaoId);
 
@@ -55,7 +56,7 @@ public class MemberController {
 
             return ResponseEntity.ok(response);
         } else {
-            MemberDto memberDto = new MemberDto(kakaoId, nickname);
+            MemberDto memberDto = new MemberDto(kakaoId, nickname, profileImageUrl);
             memberService.join(memberDto);
             Map<String, Object> response = new HashMap<>();
             response.put("accessToken", newAccessToken);

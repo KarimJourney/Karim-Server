@@ -5,20 +5,26 @@
 
 <mapper namespace="com.karim.karim.repository.MemberRepository">
 
+    <resultMap type="com.karim.karim.dto.MemberDto" id="MemberDto">
+        <result column="id" property="id"/>
+        <result column="nickname" property="nickname"/>
+        <result column="profile_image_url" property="profileImageUrl"/>
+    </resultMap>
+
     <select id="findById" parameterType="java.lang.Long" resultType="MemberDto">
-        SELECT id, nickname
+        SELECT id, nickname, profile_image_url
         FROM member
         WHERE id = #{id}
     </select>
 
     <select id="findAll" resultType="MemberDto">
-        SELECT id, nickname
+        SELECT id, nickname, profile_image_url
         FROM member
     </select>
 
     <insert id="join" parameterType="MemberDto">
-        INSERT INTO member (id, nickname)
-        VALUES (#{id}, #{nickname})
+        INSERT INTO member (id, nickname, profile_image_url)
+        VALUES (#{id}, #{nickname}, #{profileImageUrl})
     </insert>
 
     <update id="modify" parameterType="MemberDto">
