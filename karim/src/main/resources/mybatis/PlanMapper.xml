@@ -5,7 +5,7 @@
 
 <mapper namespace="com.karim.karim.repository.PlanRepository">
 
-    <resultMap type="com.karim.karim.dto.PlaceDto" id="PlanDto">
+    <resultMap type="com.karim.karim.dto.PlanDto" id="PlanDto">
         <result column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="name" property="name"/>
@@ -19,7 +19,7 @@
         WHERE user_id = #{userId} AND id = #{id}
     </select>
 
-    <select id="findByUserId" parameterType="java.lang.Long" resultMap="PlanDto">
+    <select id="findByUserId" resultMap="PlanDto">
         SELECT *
         FROM plan
         WHERE user_id = #{userId}

@@ -9,22 +9,20 @@
         <result column="id" property="id"/>
         <result column="plan_id" property="planId"/>
         <result column="attr_id" property="attrId"/>
-        <result column="title" property="title"/>
-        <result column="img1" property="img1"/>
-        <result column="addr1" property="addr1"/>
-        <result column="addr2" property="addr2"/>
+        <result column="name" property="name"/>
+        <result column="address" property="address"/>
         <result column="latitude" property="latitude"/>
         <result column="longitude" property="longitude"/>
         <result column="plan_date" property="planDate"/>
         <result column="ord" property="order"/>
     </resultMap>
 
-    <select id="findByPlanId" parameterType="int" resultMap="PlaceDto">
-        SELECT id, plan_id, no as attr_id, title, first_image1 as img1, addr1, addr2, latitude, longitude, plan_date, ord
+    <select id="findByPlanId" resultMap="PlaceDto">
+        SELECT place.id, plan_id, attraction.id as attr_id, name, address, latitude, longitude, plan_date, ord
         FROM place
-        LEFT JOIN attractions ON place.attr_id = attractions.no
+        LEFT JOIN attraction ON place.attr_id = attraction.id
         WHERE plan_id = #{planId}
-        ORDER BY plan_date, ord;
+        ORDER BY plan_date ASC, ord ASC;
     </select>
 
     <insert id="save" parameterType="PlaceDto">

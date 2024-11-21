@@ -15,13 +15,9 @@ public class PlanService {
         this.planRepository = planRepository;
     }
 
-    public PlanDto findByIdAndUserId(int id, long userId) {
-        return planRepository.findByIdAndUserId(id, userId);
-    }
+    public PlanDto findByIdAndUserId(int id, long userId) { return planRepository.findByIdAndUserId(id, userId); }
 
-    public List<PlanDto> findByUserId(long userId) {
-        return planRepository.findByUserId(userId);
-    }
+    public List<PlanDto> findByUserId(long userId) { return planRepository.findByUserId(userId); }
 
     public int savePlan(PlanDto planDto) {
         return planRepository.save(planDto);
