@@ -11,10 +11,8 @@ public class PlaceDto {
     private int id;
     private int planId;
     private int attrId;
-    private String title;
-    private String img1;
-    private String addr1;
-    private String addr2;
+    private String name;
+    private String address;
     private double latitude;
     private double longitude;
     private String planDate;

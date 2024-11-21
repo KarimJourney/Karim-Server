@@ -36,8 +36,12 @@ public class PlanController {
     @Operation(summary = "계획 생성", description = "새로운 여행 계획을 등록합니다.")
     @PostMapping()
     public ResponseEntity<String> save(@RequestBody PlanDto planDto) {
-        planService.savePlan(planDto);
-        return ResponseEntity.ok("계획 생성 성공");
+        int result = planService.savePlan(planDto);
+        if (result > 0) {
+            return ResponseEntity.ok("계획 생성 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("계획 생성 실패");
+        }
     }
 
     @Operation(summary = "계획 수정", description = "기존 여행 계획을 수정합니다.")
@@ -63,11 +67,13 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 상세 조회", description = "특정 여행 계획과 해당 계획의 장소 목록을 조회합니다.")
-    @GetMapping("/{userId}/{id}")
-    public ResponseEntity<Map<String, Object>> getPlanDetails(@PathVariable int id, @PathVariable Long userId) {
+    @GetMapping("/detail/{userId}/{id}")
+    public ResponseEntity<Map<String, Object>> getPlanDetails(@PathVariable("id") int id, @PathVariable("userId") Long userId) {
         PlanDto plan = planService.findByIdAndUserId(id, userId);
         List<PlaceDto> places = placeService.findByPlanId(id);
 
+        System.out.println("plan: " + plan);
+        System.out.println("places: " + places);
         Map<String, Object> response = new HashMap<>();
         response.put("plan", plan);
         response.put("places", places);
@@ -76,8 +82,8 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 내 장소 추가", description = "특정 계획에 새로운 장소를 추가합니다.")
-    @PostMapping("/place")
-    public ResponseEntity<String> addPlaceToPlan(@PathVariable int id, @RequestBody PlaceDto placeDto) {
+    @PostMapping("/detail/{id}")
+    public ResponseEntity<String> addPlaceToPlan(@PathVariable("id")  int id, @RequestBody PlaceDto placeDto) {
         placeDto.setPlanId(id);
         int result = placeService.save(placeDto);
         if (result > 0) {
@@ -88,8 +94,8 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 내 장소 수정", description = "특정 계획 내 장소를 수정합니다.")
-    @PatchMapping("/place")
-    public ResponseEntity<String> modifyPlaceInPlan(@PathVariable int id, @RequestBody PlaceListDto placeListDto) {
+    @PatchMapping("/detail/{id}")
+    public ResponseEntity<String> modifyPlaceInPlan(@PathVariable("id") int id, @RequestBody PlaceListDto placeListDto) {
         int result = placeService.modify(placeListDto.getData());
         if (result > 0) {
             return ResponseEntity.ok("장소 수정 성공");
@@ -99,8 +105,8 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 내 장소 삭제", description = "특정 계획에서 장소를 삭제합니다.")
-    @DeleteMapping("/{id}/{placeId}")
-    public ResponseEntity<String> deletePlaceFromPlan(@PathVariable int id, @PathVariable int placeId) {
+    @DeleteMapping("/detail/{id}/{placeId}")
+    public ResponseEntity<String> deletePlaceFromPlan(@PathVariable("id") int id, @PathVariable int placeId) {
         PlaceDto placeDto = new PlaceDto();
         placeDto.setId(placeId);
         placeDto.setPlanId(id);
