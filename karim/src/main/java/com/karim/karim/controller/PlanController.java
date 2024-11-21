@@ -28,7 +28,7 @@ public class PlanController {
 
     @Operation(summary = "전체 계획 조회", description = "사용자가 등록한 모든 여행 계획을 조회합니다.")
     @GetMapping("/{userId}")
-    public ResponseEntity<List<PlanDto>> findByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<PlanDto>> findByUserId(@PathVariable("userId") Long userId) {
         List<PlanDto> plans = planService.findByUserId(userId);
         return ResponseEntity.ok(plans);
     }
