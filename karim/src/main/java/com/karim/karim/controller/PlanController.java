@@ -94,7 +94,7 @@ public class PlanController {
     }
 
     @Operation(summary = "계획 내 장소 수정", description = "특정 계획 내 장소를 수정합니다.")
-    @PatchMapping("/detail/{id}")
+    @PutMapping("/detail/{id}")
     public ResponseEntity<String> modifyPlaceInPlan(@PathVariable("id") int id, @RequestBody PlaceListDto placeListDto) {
         int result = placeService.modify(placeListDto.getData());
         if (result > 0) {
@@ -106,7 +106,7 @@ public class PlanController {
 
     @Operation(summary = "계획 내 장소 삭제", description = "특정 계획에서 장소를 삭제합니다.")
     @DeleteMapping("/detail/{id}/{placeId}")
-    public ResponseEntity<String> deletePlaceFromPlan(@PathVariable("id") int id, @PathVariable int placeId) {
+    public ResponseEntity<String> deletePlaceFromPlan(@PathVariable("id") int id, @PathVariable("placeId") int placeId) {
         PlaceDto placeDto = new PlaceDto();
         placeDto.setId(placeId);
         placeDto.setPlanId(id);

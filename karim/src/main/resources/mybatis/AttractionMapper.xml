@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.karim.karim.repository.AttractionRepository">
+
+    <insert id="save" parameterType="AttractionDto">
+        INSERT INTO
+        attraction (id, name, address, latitude, longitude)
+        SELECT #{id}, #{name}, #{address}, #{latitude}, #{longitude} FROM DUAL
+        WHERE NOT EXISTS(SELECT * FROM attraction WHERE id = #{id})
+    </insert>
+
+</mapper>

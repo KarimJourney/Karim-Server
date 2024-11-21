@@ -25,6 +25,10 @@
         ORDER BY plan_date ASC, ord ASC;
     </select>
 
+    <select id="countPlaces" resultType="int">
+        SELECT count(*) FROM place WHERE plan_id = #{planId} AND plan_date = #{planDate};
+    </select>
+
     <insert id="save" parameterType="PlaceDto">
         INSERT INTO place(plan_id, attr_id, plan_date, ord)
         VALUES (#{planId}, #{attrId}, #{planDate}, #{order})
