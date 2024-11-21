@@ -77,7 +77,7 @@ public class MemberController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<MemberDto> findById(@PathVariable Long id) {
+    public ResponseEntity<MemberDto> findById(@PathVariable("id") Long id) {
 
         MemberDto memberDto = memberService.findById(id);
         if (memberDto == null) {
