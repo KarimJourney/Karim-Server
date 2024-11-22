@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.karim.karim.repository.BoardRepository">
+
+    <insert id="save" parameterType="BoardDto" useGeneratedKeys="true" keyProperty="id">
+        insert into board(user_id, place_id, title, content)
+        values(#{user_id}, #{place_id}, #{title}, #{content})
+    </insert>
+
+<!--    <select id="selectAll" parameterType="Board" resultType="Board">-->
+<!--        select * from board order by upload_date desc-->
+<!--    </select>-->
+<!--    <select id="detail" parameterType="Board" resultType="Board">-->
+<!--        select * from board where id= #{id}-->
+<!--    </select>-->
+<!--    <update id="update" parameterType="Board">-->
+<!--        update board set title = #{title}, content = #{content} where id = #{id}-->
+<!--    </update>-->
+<!--    <update id="updateHit" parameterType="Board">-->
+<!--        update board set hit = #{hit} where id = #{id}-->
+<!--    </update>-->
+<!--    <delete id="delete" parameterType="Board">-->
+<!--        delete from board where id = #{id}-->
+<!--    </delete>-->
+
+</mapper>

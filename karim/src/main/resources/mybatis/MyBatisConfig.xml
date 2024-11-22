@@ -13,12 +13,16 @@
         <typeAlias alias="PlanDto" type="com.karim.karim.dto.PlanDto"/>
         <typeAlias alias="HelpDto" type="com.karim.karim.dto.HelpDto"/>
         <typeAlias alias="AttractionDto" type="com.karim.karim.dto.AttractionDto"/>
+        <typeAlias alias="BoardDto" type="com.karim.karim.dto.BoardDto"/>
+        <typeAlias alias="FileDto" type="com.karim.karim.dto.FileDto"/>
     </typeAliases>
     <mappers>
         <mapper resource="mybatis/MemberMapper.xml"/>
         <mapper resource="mybatis/PlanMapper.xml"/>
         <mapper resource="mybatis/PlaceMapper.xml"/>
         <mapper resource="mybatis/AttractionMapper.xml"/>
+        <mapper resource="mybatis/BoardMapper.xml" />
+        <mapper resource="mybatis/FileMapper.xml"/>
         <mapper resource="mybatis/HelpMapper.xml"/>
     </mappers>
 </configuration>

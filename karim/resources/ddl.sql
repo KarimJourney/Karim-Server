@@ -44,14 +44,45 @@ CREATE TABLE place (
 );
 
 -- 게시판 테이블
--- create table board (
--- 	id int primary key auto_increment,
---     title varchar(50) not null,
---     content varchar(10000) not null,
---     member_id varchar(30) not null,
---     hit int not null default 0,
---     upload_date timestamp default current_timestamp()
--- );
+drop table if exists board;
+create table board (
+	id int primary key not null auto_increment,
+    user_id bigint not null,
+    place_id int not null,
+    title varchar(50) not null,
+    content varchar(10000) not null,
+    hit int not null default 0,
+    upload_date timestamp default current_timestamp()
+);
+
+drop table if exists file;
+create table `file` (
+	id int primary key not null auto_increment,
+    board_id int not null,
+    save_folder VARCHAR(45) NULL,
+	original_file VARCHAR(50) NULL,
+	save_file VARCHAR(50) NULL
+);
+ALTER TABLE `karim`.`file`
+  ADD CONSTRAINT `fk_board_id`
+  FOREIGN KEY (`board_id`)
+  REFERENCES `karim`.`board` (`id`)
+  ON DELETE CASCADE;
+-- ex: 게시글별 파일 목록 가져오기
+-- select save_folder, original_file, save_file from file where board_id = 1;
+
+drop table if exists comment;
+create table `comment` (
+	id int primary key not null auto_increment,
+    user_id bigint not null,
+    board_id int not null,
+    content varchar(1000) not null
+);
+ALTER TABLE `karim`.`comment`
+  ADD CONSTRAINT `fk_comment_board_id`
+  FOREIGN KEY (`board_id`)
+  REFERENCES `karim`.`board` (`id`)
+  ON DELETE CASCADE;
 
 -- 고객센터 테이블
 drop table if exists help;
