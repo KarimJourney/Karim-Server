@@ -10,9 +10,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @ComponentScan("com.karim.karim")
@@ -43,6 +49,14 @@ public class SpringConfig {
 
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        // JSON 컨버터 추가 (기본적으로 포함될 수 있으나, 명시적으로 추가할 수 있음)
+        messageConverters.add(new MappingJackson2HttpMessageConverter());
+
+        // XML 처리용 컨버터 추가
+        messageConverters.add(new Jaxb2RootElementHttpMessageConverter());
+        messageConverters.add(new MappingJackson2XmlHttpMessageConverter());
+
+        return new RestTemplate(messageConverters);
     }
 }
