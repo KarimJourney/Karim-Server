@@ -15,6 +15,7 @@
         <typeAlias alias="AttractionDto" type="com.karim.karim.dto.AttractionDto"/>
         <typeAlias alias="BoardDto" type="com.karim.karim.dto.BoardDto"/>
         <typeAlias alias="FileDto" type="com.karim.karim.dto.FileDto"/>
+        <typeAlias alias="CommentDto" type="com.karim.karim.dto.CommentDto"/>
     </typeAliases>
     <mappers>
         <mapper resource="mybatis/MemberMapper.xml"/>
@@ -23,6 +24,7 @@
         <mapper resource="mybatis/AttractionMapper.xml"/>
         <mapper resource="mybatis/BoardMapper.xml" />
         <mapper resource="mybatis/FileMapper.xml"/>
+        <mapper resource="mybatis/CommentMapper.xml"/>
         <mapper resource="mybatis/HelpMapper.xml"/>
     </mappers>
 </configuration>

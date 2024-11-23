@@ -48,6 +48,8 @@ dependencies {
 	// JSON PARSER
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	implementation 'commons-fileupload:commons-fileupload:1.5'
 }
 
 tasks.named('test') {

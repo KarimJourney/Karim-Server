@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class FileDto {
+    private int boardId;
     private String saveFolder;
     private String originalFile;
     private String saveFile;

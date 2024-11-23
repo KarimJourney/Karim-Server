@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.karim.karim.repository.CommentRepository">
+
+    <resultMap type="com.karim.karim.dto.CommentDto" id="CommentDto">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="nickname" property="nickname"/>
+        <result column="board_id" property="boardId"/>
+        <result column="content" property="content"/>
+    </resultMap>
+
+    <insert id="save" parameterType="CommentDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comment (user_id, board_id, content)
+        VALUES (#{userId}, #{boardId}, #{content})
+    </insert>
+
+    <select id="findAllByBoardId" parameterType="int" resultType="CommentDto">
+        SELECT c.id, c.user_id AS userId, m.nickname, c.board_id AS boardId, c.content
+        FROM comment c
+        JOIN member m ON c.user_id = m.id
+        WHERE c.board_id = #{boardId}
+        ORDER BY c.id ASC
+    </select>
+
+    <select id="findById" parameterType="int" resultType="CommentDto">
+        SELECT c.id, c.user_id AS userId, m.nickname, c.board_id AS boardId, c.content
+        FROM comment c
+        JOIN member m ON c.user_id = m.id
+        WHERE c.id = #{id}
+    </select>
+
+    <update id="modify" parameterType="CommentDto">
+        UPDATE comment SET content = #{content} WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM comment WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -5,25 +5,65 @@
 
 <mapper namespace="com.karim.karim.repository.BoardRepository">
 
+    <resultMap id="BoardWithFiles" type="com.karim.karim.dto.BoardDto">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="nickname" property="nickname"/>
+        <result column="place_id" property="placeId"/>
+        <result column="attraction_id" property="attractionId"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="hit" property="hit"/>
+        <result column="upload_date" property="uploadDate"/>
+
+        <collection property="files" ofType="com.karim.karim.dto.FileDto">
+            <result column="board_id" property="boardId"/>
+            <result column="save_folder" property="saveFolder"/>
+            <result column="original_file" property="originalFile"/>
+            <result column="save_file" property="saveFile"/>
+        </collection>
+    </resultMap>
+
+
     <insert id="save" parameterType="BoardDto" useGeneratedKeys="true" keyProperty="id">
-        insert into board(user_id, place_id, title, content)
-        values(#{user_id}, #{place_id}, #{title}, #{content})
+        INSERT INTO board(user_id, place_id, title, content)
+        VALUES (#{userId}, #{placeId}, #{title}, #{content})
     </insert>
 
-<!--    <select id="selectAll" parameterType="Board" resultType="Board">-->
-<!--        select * from board order by upload_date desc-->
-<!--    </select>-->
-<!--    <select id="detail" parameterType="Board" resultType="Board">-->
-<!--        select * from board where id= #{id}-->
-<!--    </select>-->
-<!--    <update id="update" parameterType="Board">-->
-<!--        update board set title = #{title}, content = #{content} where id = #{id}-->
-<!--    </update>-->
-<!--    <update id="updateHit" parameterType="Board">-->
-<!--        update board set hit = #{hit} where id = #{id}-->
-<!--    </update>-->
-<!--    <delete id="delete" parameterType="Board">-->
-<!--        delete from board where id = #{id}-->
-<!--    </delete>-->
+    <select id="findAll" resultMap="BoardWithFiles">
+        SELECT
+        b.*,
+        f.board_id,
+        f.save_folder,
+        f.original_file,
+        f.save_file
+        FROM board b
+        LEFT JOIN file f ON b.id = f.board_id
+        ORDER BY b.upload_date DESC
+    </select>
+
+    <select id="findByBoardId" parameterType="int" resultType="BoardDto">
+        SELECT *
+        FROM BOARD
+        WHERE id = #{id}
+    </select>
+
+    <update id="modify" parameterType="BoardDto">
+        UPDATE board
+        SET title = #{title}, content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <update id="modifyHit" parameterType="int">
+        UPDATE board
+        SET hit = hit + 1
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM board
+        WHERE id = #{id}
+    </delete>
 
 </mapper>

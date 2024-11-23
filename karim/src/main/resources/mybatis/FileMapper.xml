@@ -5,9 +5,26 @@
 
 <mapper namespace="com.karim.karim.repository.FileRepository">
 
-    <select id="save" parameterType="map" resultType="FileDto">
-        insert into file_info (board_id, save_folder, original_file, save_file)
-        values (#{board_id}, #{save_folder}, #{original_file}, #{save_file}
+    <resultMap type="com.karim.karim.dto.FileDto" id="FileDto">
+        <result column="board_id" property="boardId"/>
+        <result column="save_folder" property="saveFolder"/>
+        <result column="original_file" property="originalFile"/>
+        <result column="save_file" property="saveFile"/>
+    </resultMap>
+
+    <insert id="save" parameterType="FileDto">
+        INSERT INTO file (board_id, save_folder, original_file, save_file)
+        VALUES (#{boardId}, #{saveFolder}, #{originalFile}, #{saveFile})
+    </insert>
+
+    <delete id="deleteByBoardId" parameterType="int">
+        DELETE FROM file WHERE board_id = #{boardId}
+    </delete>
+
+    <select id="findByBoardId" parameterType="int" resultMap="FileDto">
+        SELECT board_id, save_folder, original_file, save_file
+        FROM file
+        WHERE board_id = #{boardId}
     </select>
 
 </mapper>
