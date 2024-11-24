@@ -99,4 +99,16 @@ public class JWTUtil {
         return (String) value.get("id");
     }
 
+    public String validateAccessToken(String accessToken, Long userId) {
+        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
+            throw new IllegalStateException("AccessToken이 제공되지 않았거나 유효하지 않습니다.");
+        }
+
+        String tokenId = getId(accessToken);
+        if (!String.valueOf(userId).equals(tokenId)) {
+            throw new IllegalStateException("AccessToken의 사용자와 요청된 userId가 일치하지 않습니다.");
+        }
+
+        return tokenId;
+    }
 }

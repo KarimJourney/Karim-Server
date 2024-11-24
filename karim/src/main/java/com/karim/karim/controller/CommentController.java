@@ -30,17 +30,7 @@ public class CommentController {
             @RequestBody CommentDto commentDto,
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String accessToken) {
 
-        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
-            throw new IllegalStateException("AccessToken이 제공되지 않았거나 유효하지 않습니다.");
-        }
-
-        String tokenId = jwtUtil.getId(accessToken);
-
-        if (tokenId == null) {
-            throw new IllegalStateException("유효하지 않은 AccessToken입니다.");
-        }
-
-        commentDto.setUserId(Long.parseLong(tokenId));
+        jwtUtil.validateAccessToken(accessToken, commentDto.getUserId());
 
         int result = commentService.save(commentDto);
 
@@ -64,19 +54,7 @@ public class CommentController {
             @RequestBody CommentDto commentDto,
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String accessToken) {
 
-        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
-            throw new IllegalStateException("AccessToken이 제공되지 않았거나 유효하지 않습니다.");
-        }
-
-        String tokenId = jwtUtil.getId(accessToken);
-
-        if (tokenId == null) {
-            throw new IllegalStateException("유효하지 않은 AccessToken입니다.");
-        }
-
-        if (commentDto.getUserId() != Long.parseLong(tokenId)) {
-            throw new IllegalStateException("AccessToken의 사용자와 수정 요청된 작성자가 일치하지 않습니다.");
-        }
+        jwtUtil.validateAccessToken(accessToken, commentDto.getUserId());
 
         int result = commentService.modify(commentDto);
 
@@ -93,25 +71,9 @@ public class CommentController {
             @PathVariable int id,
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String accessToken) {
 
-        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
-            throw new IllegalStateException("AccessToken이 제공되지 않았거나 유효하지 않습니다.");
-        }
-
-        String tokenId = jwtUtil.getId(accessToken);
-
-        if (tokenId == null) {
-            throw new IllegalStateException("유효하지 않은 AccessToken입니다.");
-        }
-
         CommentDto commentDto = commentService.findById(id);
 
-        if (commentDto == null) {
-            throw new IllegalStateException("댓글 삭제 실패: 해당 댓글을 찾을 수 없습니다.");
-        }
-
-        if (commentDto.getUserId() != Long.parseLong(tokenId)) {
-            throw new IllegalStateException("AccessToken의 사용자와 삭제 요청된 작성자가 일치하지 않습니다.");
-        }
+        jwtUtil.validateAccessToken(accessToken, commentDto.getUserId());
 
         int result = commentService.delete(id);
 

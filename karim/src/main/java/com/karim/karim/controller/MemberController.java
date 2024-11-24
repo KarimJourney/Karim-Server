@@ -81,15 +81,18 @@ public class MemberController {
     public ResponseEntity<MemberDto> findById(@PathVariable("id") Long id) {
 
         MemberDto memberDto = memberService.findById(id);
+
         if (memberDto == null) {
             throw new IllegalStateException("회원 조회 실패: 해당 회원을 찾을 수 없습니다.");
         }
+
         return ResponseEntity.ok(memberDto);
     }
 
     @Operation(summary = "전체 회원 조회", description = "모든 회원 정보를 조회합니다.")
     @GetMapping("/all")
     public ResponseEntity<List<MemberDto>> findAll() {
+
         return ResponseEntity.ok(memberService.findAll());
     }
 
@@ -99,15 +102,7 @@ public class MemberController {
             @RequestBody MemberDto memberDto,
             @RequestHeader(value = "Authorization", required = false) String accessToken) {
 
-        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
-            throw new IllegalStateException("AccessToken이 제공되지 않았거나 유효하지 않습니다.");
-        }
-
-        String tokenId = jwtUtil.getId(accessToken);
-
-        if (!String.valueOf(memberDto.getId()).equals(tokenId)) {
-            throw new IllegalStateException("AccessToken의 사용자와 수정 요청된 ID가 일치하지 않습니다.");
-        }
+        jwtUtil.validateAccessToken(accessToken, memberDto.getId());
 
         int result = memberService.modify(memberDto);
 
@@ -124,15 +119,7 @@ public class MemberController {
             @PathVariable Long id,
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String accessToken) {
 
-        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
-            throw new IllegalStateException("AccessToken이 제공되지 않았거나 유효하지 않습니다.");
-        }
-
-        String tokenId = jwtUtil.getId(accessToken);
-
-        if (!String.valueOf(id).equals(tokenId)) {
-            throw new IllegalStateException("AccessToken의 사용자와 요청된 ID가 일치하지 않습니다.");
-        }
+        jwtUtil.validateAccessToken(accessToken, id);
 
         int result = memberService.withdraw(id);
 

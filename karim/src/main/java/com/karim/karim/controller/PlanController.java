@@ -57,7 +57,7 @@ public class PlanController {
 
     @Operation(summary = "계획 삭제", description = "특정 ID의 여행 계획을 삭제합니다.")
     @DeleteMapping("/{userId}/{id}")
-    public ResponseEntity<String> delete(@PathVariable int id, @PathVariable Long userId) {
+    public ResponseEntity<String> delete(@PathVariable int id,@PathVariable Long userId) {
         int result = planService.deletePlan(id, userId);
         if (result > 0) {
             return ResponseEntity.ok("계획 삭제 성공");
