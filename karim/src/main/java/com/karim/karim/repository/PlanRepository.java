@@ -8,9 +8,9 @@ import java.util.*;
 
 @Mapper
 public interface PlanRepository {
-    PlanDto findByIdAndUserId(@Param("id") int id, @Param("userId") long userId);
+    PlanDto findById(int id);
     List<PlanDto> findByUserId(long userId);
     int save(PlanDto planDto);
     int modify(PlanDto planDto);
-    int delete(int id, long userId);
+    int delete(int id);
 }

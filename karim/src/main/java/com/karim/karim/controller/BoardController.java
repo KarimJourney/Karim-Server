@@ -39,12 +39,9 @@ public class BoardController {
         System.out.println("Received files: " + Arrays.toString(files));
         System.out.println("Current working directory: " + System.getProperty("user.dir"));
 
-        validateAccessToken(accessToken);
-
-        String tokenId = jwtUtil.getId(accessToken);
-
         BoardDto boardDto = parseBoardDto(boardString);
-        boardDto.setUserId(Long.parseLong(tokenId));
+
+        jwtUtil.validateAccessToken(accessToken, boardDto.getUserId());
 
         try {
             int result = boardService.save(boardDto, files);
@@ -57,6 +54,7 @@ public class BoardController {
     @Operation(summary = "게시글 목록 조회", description = "모든 게시글 목록을 조회합니다.")
     @GetMapping("/list")
     public ResponseEntity<List<BoardDto>> list() {
+
         try {
             List<BoardDto> boardList = boardService.findAll();
             return ResponseEntity.ok(boardList);
@@ -68,6 +66,7 @@ public class BoardController {
     @Operation(summary = "게시글 상세 조회", description = "게시글 ID를 통해 상세 정보를 조회합니다.")
     @GetMapping("/{id}")
     public ResponseEntity<BoardDto> detail(@PathVariable("id") int id) {
+
         try {
             BoardDto boardDto = boardService.findByBoardId(id);
             if (boardDto == null) {
@@ -87,14 +86,9 @@ public class BoardController {
             @RequestPart(value = "files", required = false) MultipartFile[] files,
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String accessToken) {
 
-        validateAccessToken(accessToken);
-
-        String tokenId = jwtUtil.getId(accessToken);
         BoardDto boardDto = parseBoardDto(boardString);
 
-        if (boardDto.getUserId() != Long.parseLong(tokenId)) {
-            throw new IllegalStateException("AccessToken의 사용자와 수정 요청된 작성자가 일치하지 않습니다.");
-        }
+        jwtUtil.validateAccessToken(accessToken, boardDto.getUserId());
 
         try {
             int result = boardService.modify(boardDto, files);
@@ -110,18 +104,13 @@ public class BoardController {
             @PathVariable int id,
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String accessToken) {
 
-        validateAccessToken(accessToken);
-
-        String tokenId = jwtUtil.getId(accessToken);
         BoardDto boardDto = boardService.findByBoardId(id);
 
         if (boardDto == null) {
             throw new IllegalStateException("게시글 삭제 실패: 해당 게시글을 찾을 수 없습니다.");
         }
 
-        if (boardDto.getUserId() != Long.parseLong(tokenId)) {
-            throw new IllegalStateException("AccessToken의 사용자와 삭제 요청된 작성자가 일치하지 않습니다.");
-        }
+        jwtUtil.validateAccessToken(accessToken, boardDto.getUserId());
 
         try {
             int result = boardService.delete(id);
@@ -131,14 +120,10 @@ public class BoardController {
         }
     }
 
-    private void validateAccessToken(String accessToken) {
-        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
-            throw new IllegalStateException("AccessToken이 제공되지 않았거나 유효하지 않습니다.");
-        }
-    }
-
     private BoardDto parseBoardDto(String boardString) {
+
         ObjectMapper objectMapper = new ObjectMapper();
+        
         try {
             return objectMapper.readValue(boardString, BoardDto.class);
         } catch (JsonProcessingException e) {

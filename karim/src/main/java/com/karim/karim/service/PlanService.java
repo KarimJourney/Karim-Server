@@ -15,8 +15,8 @@ public class PlanService {
         this.planRepository = planRepository;
     }
 
-    public PlanDto findByIdAndUserId(int id, long userId) {
-        return planRepository.findByIdAndUserId(id, userId);
+    public PlanDto findById(int id) {
+        return planRepository.findById(id);
     }
 
     public List<PlanDto> findByUserId(long userId) {
@@ -31,7 +31,7 @@ public class PlanService {
         return planRepository.modify(planDto);
     }
 
-    public int deletePlan(int id, long userId) {
-        return planRepository.delete(id, userId);
+    public int deletePlan(int id) {
+        return planRepository.delete(id);
     }
 }

@@ -15,10 +15,10 @@
         <result column="content" property="content" />
     </resultMap>
 
-    <select id="findByIdAndUserId" parameterType="map" resultMap="PlanDto">
+    <select id="findById" parameterType="int" resultMap="PlanDto">
         SELECT *
         FROM plan
-        WHERE user_id = #{userId} AND id = #{id}
+        WHERE id = #{id}
     </select>
 
     <select id="findByUserId" resultMap="PlanDto">
@@ -38,9 +38,9 @@
         WHERE id = #{id}
     </update>
 
-    <delete id="delete" parameterType="map">
+    <delete id="delete" parameterType="int">
         DELETE
         FROM plan
-        WHERE id = #{id} AND user_id = #{userId}
+        WHERE id = #{id}
     </delete>
 </mapper>
