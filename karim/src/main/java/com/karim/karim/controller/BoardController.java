@@ -123,7 +123,7 @@ public class BoardController {
     private BoardDto parseBoardDto(String boardString) {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        
+
         try {
             return objectMapper.readValue(boardString, BoardDto.class);
         } catch (JsonProcessingException e) {
