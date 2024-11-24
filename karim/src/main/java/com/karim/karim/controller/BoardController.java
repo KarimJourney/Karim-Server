@@ -101,7 +101,7 @@ public class BoardController {
     @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(
-            @PathVariable int id,
+            @PathVariable("id") int id,
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String accessToken) {
 
         BoardDto boardDto = boardService.findByBoardId(id);
