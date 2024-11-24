@@ -33,19 +33,23 @@
     <select id="findAll" resultMap="BoardWithFiles">
         SELECT
         b.*,
+        m.nickname,
         f.board_id,
         f.save_folder,
         f.original_file,
         f.save_file
         FROM board b
         LEFT JOIN file f ON b.id = f.board_id
+        LEFT JOIN member m ON b.user_id = m.id
         ORDER BY b.upload_date DESC
     </select>
 
     <select id="findByBoardId" parameterType="int" resultType="BoardDto">
-        SELECT *
-        FROM BOARD
-        WHERE id = #{id}
+        SELECT b.*,
+        m.nickname
+        FROM BOARD b
+        LEFT JOIN member m ON b.user_id = m.id
+        WHERE b.id = #{id}
     </select>
 
     <update id="modify" parameterType="BoardDto">
