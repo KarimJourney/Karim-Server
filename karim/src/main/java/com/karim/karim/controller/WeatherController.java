@@ -86,10 +86,8 @@ public class WeatherController {
             );
 
             // API 호출
-            System.out.println("Request URL: " + url);  // API 요청 URL 로그
             URI uri = new URI(url);
             ResponseEntity<Map> response = restTemplate.getForEntity(uri, Map.class);
-            System.out.println(response.getBody());
 
             // 필요한 항목들 추출
             Map<String, Object> responseBody = (Map<String, Object>) response.getBody().get("response");
